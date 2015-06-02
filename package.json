@@ -4,7 +4,7 @@
   "description": "A live javascript/css/html playpen",
   "main": "index.js",
   "scripts": {
-    "test": "nodeunit tests.js"
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,23 @@
   },
   "homepage": "https://github.com/getbacktofront/periscope",
   "dependencies": {
-    "express": "^4.12.4"
+    "babel": "^5.5.4",
+    "express": "^4.12.4",
+    "jquery": "^2.1.4",
+    "node-static": "^0.7.6",
+    "primus": "^3.0.2",
+    "q": "^1.4.1",
+    "sockjs": "^0.3.15",
+    "sockjs-client": "git+ssh://git@github.com/sockjs/sockjs-client.git",
+    "ws": "^0.7.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.1.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-jade": "^1.0.1",
+    "gulp-live-server": "*",
+    "gulp-nodeunit": "0.0.5",
+    "nodeunit": "^0.9.1"
   }
 }
