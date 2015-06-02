@@ -1,0 +1,22 @@
+{
+  "name": "periscope",
+  "version": "0.0.1",
+  "description": "A live javascript/css/html playpen",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodeunit tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/getbacktofront/periscope"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/getbacktofront/periscope/issues"
+  },
+  "homepage": "https://github.com/getbacktofront/periscope",
+  "dependencies": {
+    "express": "^4.12.4"
+  }
+}
