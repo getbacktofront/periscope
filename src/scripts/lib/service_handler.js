@@ -19,11 +19,13 @@ class ServiceHandler {
   /**
    * Handle some data object
    * @param data Any object with a 'path' property.
+   * @param conn The connection object, whatever type.
    */
-  handle(data) {
+  handle(data, conn) {
     var promises = [];
     for (var i = 0; i < this.bindings.length; ++i) {
-      var p = this.bindings[i].handle(data);
+      console.log("passing conn" + conn);
+      var p = this.bindings[i].handle(data, conn);
       promises.push(p);
     }
     return q.all(promises);

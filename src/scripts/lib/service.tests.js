@@ -16,7 +16,7 @@ module.exports.test_service_matches = function(test) {
 
 module.exports.test_service_handle = function(test) {
   test.expect(2);
-  var instance = new Service('foo.*', (service, next) => {
+  var instance = new Service('foo.*', (service, c, next) => {
     next();
   });
   test.ok(instance.isIdle());
@@ -30,15 +30,12 @@ module.exports.test_service_handle = function(test) {
 
 module.exports.test_service_handle_miss = function(test) {
   test.expect(2);
-  var instance = new Service('foo.*', (service, next) => {
+  var instance = new Service('foo.*', (service, c, next) => {
     next();
   });
   test.ok(instance.isIdle());
   instance.handle({ path: 'bar' }).then(() => {
-    console.log("MISSING RESOLVED with OK?");
-    console.log(instance);
     test.ok(instance.isIdle());
-    console.log("compelted");
     test.done();
   }, () => {
     test.ok(false);
@@ -46,7 +43,6 @@ module.exports.test_service_handle_miss = function(test) {
 };
 
 module.exports.test_service_handle_failure = function(test) {
-  console.log("test_service_handle_failure");
   test.expect(2);
   var instance = new Service('foo.*', (service) => {
     throw new Error("Failed");
@@ -55,9 +51,6 @@ module.exports.test_service_handle_failure = function(test) {
   instance.handle({ path: 'fooooo' }).then(() => {
     test.ok(false);
   }, (err) => {
-    console.log("...?");
-    console.log(err);
-    console.log(instance);
     test.ok(instance.isError());
     test.done();
   });

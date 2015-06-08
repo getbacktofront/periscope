@@ -1,8 +1,13 @@
 html
+  head
+    link(href="css/styles.css", rel="stylesheet", type="text/css")
   body
     p.status
       | Hello World 2
   div#first.box(style="display: none;")
     form
-      input
+      | Type sass here!
+      br
+      textarea#input
+      textarea#output
   script(src="js/component.js")

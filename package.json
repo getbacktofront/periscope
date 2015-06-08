@@ -19,12 +19,14 @@
   "dependencies": {
     "babel": "^5.5.4",
     "express": "^4.12.4",
+    "gulp-sass": "^2.0.1",
     "jquery": "^2.1.4",
     "node-static": "^0.7.6",
     "primus": "^3.0.2",
     "q": "^1.4.1",
     "sockjs": "^0.3.15",
     "sockjs-client": "git+ssh://git@github.com/sockjs/sockjs-client.git",
+    "vinyl": "^0.5.0",
     "ws": "^0.7.2"
   },
   "devDependencies": {
@@ -34,6 +36,7 @@
     "gulp-jade": "^1.0.1",
     "gulp-live-server": "*",
     "gulp-nodeunit": "0.0.5",
+    "gulp-sass-native": "shadowmint/gulp-sass-native#0.0.1",
     "nodeunit": "^0.9.1"
   }
 }

@@ -6,28 +6,31 @@ var express = require('express');
 var app = express();
 app.use('/', express.static(__dirname + '/../../public'));
 
+var router = null;
 var server = app.listen(3000, function() {
   console.log("Express server running");
+  router = require('./router');
 });
 
 // 1. Echo sockjs server
-var sockjs_echo = sockjs.createServer({});
-sockjs_echo.on('connection', function(conn) {
-  console.log("Got an incoming web socket connection");
-    conn.on('data', function(message) {
-        var data = {
-          path: '/foo',
-          msg: message + '____'
-        };
+var socket_server = sockjs.createServer({});
+socket_server.on('connection', function(conn) {
+  console.log("conn: " + conn);
+  conn.on('data', function(message) {
+    if (router != null) {
+      try {
+        var data = JSON.parse(message);
         console.log(data);
-        conn.write(JSON.stringify( data ));
-    });
+        console.log(conn);
+        router.handle(data, conn);
+      }
+      catch(err) {
+        console.log(err);
+      }
+    }
+  });
 });
 
-/*server.addListener('upgrade', function(req,res){
-    res.end();
-});*/
-
-sockjs_echo.installHandlers(server, {prefix:'/echo'});
+socket_server.installHandlers(server, {prefix:'/service'});
 
 module.exports = server;

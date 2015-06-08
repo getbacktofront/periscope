@@ -12,10 +12,11 @@ class Component {
 
 var x = new Component();
 var $status = $('.status');
+var pipe = null;
 
 var connect = function() {
 
-  var sockjs_url = '/echo';
+  var sockjs_url = '/service';
   var sockjs = new SockJS(sockjs_url);
 
   var inp  = $('#first input');
@@ -32,6 +33,7 @@ var connect = function() {
     $('#first').show();
     console.log("Opened");
     console.log($('#first'));
+    pipe = sockjs;
 
     $('form').submit(function(event) {
       console.log("Send: " + inp.val());
@@ -43,15 +45,29 @@ var connect = function() {
   sockjs.onclose   = function()  {
     print('[*] close');
     $status.html('closed');
+    pipe = null;
   };
   sockjs.onmessage = function(e) {
     var data = e.data;
+    console.log("Incoming...");
     console.log(data);
     data = JSON.parse(data);
     print('[.] message', data);
-    router.handle(data);
+    console.log(sockjs);
+    router.handle(data, sockjs);
   };
 };
+
+var last_value = null;
+$('#input').keyup(function() {
+  var value = $('#input').val();
+  if(last_value != value) {
+    if (pipe) {
+      pipe.send(JSON.stringify({path: 'sass', raw: value}));
+      last_value = value;
+    }
+  }
+});
 
 $status.html('connecting...');
 connect();

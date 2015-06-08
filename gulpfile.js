@@ -4,8 +4,9 @@ var gulp = require('gulp');
 var nodeunit = require('gulp-nodeunit');
 var gls = require('gulp-live-server');
 var browserify = require('gulp-browserify');
+var sass = require('gulp-sass-native');
 
-gulp.task('default', ['templates', 'scripts', 'client-scripts']);
+gulp.task('default', ['templates', 'styles', 'scripts', 'client-scripts']);
 
 /// Run tests
 gulp.task('test', ['default'], function () {
@@ -19,6 +20,15 @@ gulp.task('templates', function() {
   gulp.src('./src/jade/*.jade')
     .pipe(jade({locals: {}}))
     .pipe(gulp.dest('./public/'));
+});
+
+/// Build all static templates
+gulp.task('styles', function() {
+
+  // Process all sass files in src/sass/ and push to public/
+  gulp.src('./src/sass/*.scss')
+    .pipe(sass().on('error', function(err) { console.log(err); }))
+    .pipe(gulp.dest('./public/css'));
 });
 
 // Setup scripts for client and server
@@ -64,6 +74,7 @@ gulp.task('server', ['default'], function() {
 
   // Watch for changes
   gulp.watch(['src/jade/**/*.jade'], ['templates']);
+  gulp.watch(['src/sass/*.scss'], ['styles']);
   gulp.watch(['src/scripts/lib/**/*.js'], ['scripts', 'client-scripts']);
   gulp.watch(['src/scripts/client/**/*.js'], ['client-scripts']);
   gulp.watch(['src/scripts/server/**/*.js'], ['scripts']);

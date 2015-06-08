@@ -45,8 +45,9 @@ class Service {
   /**
    * Process this service and set the response state
    * @param data The data object, anything, so long as it has a 'path' property.
+   * @param conn The connection object, whatever it is.
    */
-  handle(data) {
+  handle(data, conn) {
     this.state = ServiceState.IDLE;
     var deferred = q.defer();
     deferred.promise.then((value) => {
@@ -55,10 +56,13 @@ class Service {
       this.state = ServiceState.ERROR;
       this.error = err;
     });
+    console.log(data);
+    console.log(data.path);
+    console.log(this.path);
     if (data && data.path) {
       if (this.matches(data.path)) {
         try {
-          this.handler(data, (value) => {
+          this.handler(data, conn, (value) => {
             deferred.resolve(value);
           }, (error) => {
             deferred.reject(error);

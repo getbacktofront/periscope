@@ -11,9 +11,9 @@ module.exports.test_bind_and_trigger = function(test) {
   test.expect(3);
 
   var instance = new ServiceHandler();
-  var service1 = new Service('/foo', (data, next) => { next(); });
-  var service2 = new Service('/bar', (data, next) => { next(); });
-  var service3 = new Service('.*', (data, next) => { next(); });
+  var service1 = new Service('/foo', (data, c, next) => { next(); });
+  var service2 = new Service('/bar', (data, c, next) => { next(); });
+  var service3 = new Service('.*', (data, c, next) => { next(); });
 
   instance.bind(service1);
   instance.bind(service2);
