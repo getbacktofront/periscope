@@ -71,6 +71,7 @@ gulp.task('server', ['default'], function() {
 
   // Start the server at the beginning of the task
   var server = gls.new('index.js');
+  server.start();
 
   // Watch for changes
   gulp.watch(['src/jade/**/*.jade'], ['templates']);

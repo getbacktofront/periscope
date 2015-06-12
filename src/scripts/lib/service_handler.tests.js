@@ -20,7 +20,6 @@ module.exports.test_bind_and_trigger = function(test) {
   instance.bind(service3);
 
   instance.handle({ path: '/foo' }).then(() => {
-    console.log("Foo and so then");
     test.ok(service1.isOk());
     test.ok(service2.isIdle());
     test.ok(service3.isOk());

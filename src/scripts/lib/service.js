@@ -56,9 +56,6 @@ class Service {
       this.state = ServiceState.ERROR;
       this.error = err;
     });
-    console.log(data);
-    console.log(data.path);
-    console.log(this.path);
     if (data && data.path) {
       if (this.matches(data.path)) {
         try {

@@ -24,7 +24,6 @@ class ServiceHandler {
   handle(data, conn) {
     var promises = [];
     for (var i = 0; i < this.bindings.length; ++i) {
-      console.log("passing conn" + conn);
       var p = this.bindings[i].handle(data, conn);
       promises.push(p);
     }

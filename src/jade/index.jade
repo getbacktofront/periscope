@@ -4,10 +4,19 @@ html
   body
     p.status
       | Hello World 2
-  div#first.box(style="display: none;")
+      
+  div.dynamic_block
     form
       | Type sass here!
       br
       textarea#input
       textarea#output
+        
+  div.dynamic_block
+    form
+      | Type jade here!
+      br
+      textarea#input_jade
+      textarea#output_html
+        
   script(src="js/component.js")

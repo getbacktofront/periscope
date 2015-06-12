@@ -8,3 +8,10 @@ textarea {
   width: 400px;
   height: 300px;
 }
+
+.dynamic_block {
+  display: none;
+  .socket--connected & {
+    display: block;
+  }
+}

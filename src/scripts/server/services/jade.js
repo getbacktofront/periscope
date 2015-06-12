@@ -1,13 +1,13 @@
 var Service = require('../lib/service.js');
-var sass = require('gulp-sass-native');
+var jade = require('gulp-jade');
 var File = require('vinyl');
 var StringDecoder = require('string_decoder').StringDecoder;
 
-/** Pass input directly to sass gulp plugin */
+/** Pass input directly to jade gulp plugin */
 module.exports = function() {
-  return new Service('sass', (data, conn, next) => {
+  return new Service('jade', (data, conn, next) => {
     try {
-      console.log("SASS request...");
+      console.log("JADE request...");
       console.log(data.raw);
       var file = new File({
         path: 'source.scss',
@@ -16,9 +16,9 @@ module.exports = function() {
         contents: new Buffer(data.raw)
       });
 
-      var stream = sass();
+      var stream = jade();
       stream.on('error', function(err) {
-        console.log("Sass error");
+        console.log("Jade error");
         conn.write(JSON.stringify({
           path: 'task',
           target: data.target,

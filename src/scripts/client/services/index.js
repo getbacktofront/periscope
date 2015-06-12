@@ -1,6 +1,7 @@
 module.exports = function(handler) {
   var services = [
-    require('./task')
+    require('./task'),
+    require('./periscope')
   ];
   for (var i = 0; i < services.length; ++i) {
     var service = services[i]();
