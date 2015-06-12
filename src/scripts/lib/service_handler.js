@@ -1,7 +1,7 @@
-var q = require('q');
+import q from 'q';
 
 /** A common base for service handlers */
-class ServiceHandler {
+export default class ServiceHandler {
 
   /** Create a constructor */
   constructor() {
@@ -30,5 +30,3 @@ class ServiceHandler {
     return q.all(promises);
   }
 }
-
-module.exports = ServiceHandler;
