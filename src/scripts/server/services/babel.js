@@ -4,8 +4,9 @@ var File = require('vinyl');
 var StringDecoder = require('string_decoder').StringDecoder;
 
 /** Pass input directly to jade gulp plugin */
-module.exports = function() {
-  return new Service('babel', (data, conn, next) => {
+module.exports = function(pen) {
+  var rtn = new Service('babel', (data, conn, next) => {
+    var pen = rtn.pen;
     try {
       console.log("BABEL request...");
       console.log(data.raw);
@@ -40,10 +41,15 @@ module.exports = function() {
         var decoder = new StringDecoder('utf8');
         var content = decoder.write(all).trim();
         console.log(content);
+        pen.js = content;
         conn.write(JSON.stringify({
           path: 'task',
           target: data.target,
           value: content
+        }));
+        conn.write(JSON.stringify({
+          path: 'periscope',
+          value: pen.compile()
         }));
       });
 
@@ -56,4 +62,6 @@ module.exports = function() {
     }
     next();
   });
+  rtn.pen = pen;
+  return rtn;
 };

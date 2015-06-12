@@ -4,11 +4,12 @@ var File = require('vinyl');
 var StringDecoder = require('string_decoder').StringDecoder;
 
 /** Pass input directly to sass gulp plugin */
-module.exports = function() {
-  return new Service('sass', (data, conn, next) => {
+module.exports = function(pen) {
+  var rtn = new Service('sass', (data, conn, next) => {
     try {
       console.log("SASS request...");
       console.log(data.raw);
+      var pen = rtn.pen;
       var file = new File({
         path: 'source.scss',
         cwd: 'fake/',
@@ -39,11 +40,16 @@ module.exports = function() {
         var all = Buffer.concat(bufs);
         var decoder = new StringDecoder('utf8');
         var content = decoder.write(all).trim();
+        pen.css = content;
         console.log(content);
         conn.write(JSON.stringify({
           path: 'task',
           target: data.target,
           value: content
+        }));
+        conn.write(JSON.stringify({
+          path: 'periscope',
+          value: pen.compile()
         }));
       });
 
@@ -56,4 +62,6 @@ module.exports = function() {
     }
     next();
   });
+  rtn.pen = pen;
+  return rtn;
 };

@@ -5,6 +5,7 @@ var $ = require('../../../node_modules/jquery/dist/jquery');
 module.exports = function() {
   return new Service('periscope', (data, c, next) => {
     console.log(data);
+    $('#periscope').contents().find('html').html(data.value);
     next();
   });
 };
