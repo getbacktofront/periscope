@@ -40,3 +40,4 @@ class InputBox {
 // Bind various input handlers
 new InputBox($('#input'), '#output', connection, 'sass');
 new InputBox($('#input_jade'), '#output_html', connection, 'jade');
+new InputBox($('#input_es6'), '#output_js', connection, 'babel');

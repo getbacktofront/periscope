@@ -1,7 +1,8 @@
 module.exports = function(handler) {
   var services = [
     require('./sass'),
-    require('./jade')
+    require('./jade'),
+    require('./babel')
   ];
   for (var i = 0; i < services.length; ++i) {
     var service = services[i]();
