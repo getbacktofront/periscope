@@ -1,3 +1,5 @@
+import {MemoryFactory} from '../lib/persist/memory';
+
 /** This class represents a single html/css/javascript combo as a single page */
 export class Pen {
   constructor() {
@@ -13,5 +15,8 @@ export class Pen {
 };
 
 /** Access to pen instances via persistance api */
-export class PenFactory {
+export class PenFactory extends MemoryFactory {
+  _new() {
+    return new Pen();
+  }
 };
