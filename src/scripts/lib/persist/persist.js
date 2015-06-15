@@ -1,35 +1,51 @@
 import q from 'Q';
 
 /** A base class for handling persistence with objects */
-export default class PersistenceFactory {
+export class PersistenceFactory {
 
-  /** Create a new instance */
+  /**
+   * Create a new instance
+   * @return A promise for a new instance.
+   */
   insert() {
     var instance = this._new();
-    this._persist(instance);
-    return instance;
+    var rtn = this._persist(instance);
+    return rtn;
   }
 
-  /** Save an updated instance */
+  /**
+   * Save an updated instance
+   * @return A promise for when the persist is completed.
+   */
   update() {
   }
 
   /**
    * Find and return a single instance by query
+   * The handler is in the form:
+   *
+   *    (v, next, end) => { .... }
+   *
+   * After processing a value, it must call either next() or end().
+   * For short count call end(). Handler calls are dispatched synchronously
+   * and the cursor is only incremented when next() is invoked.
+   *
    * @param query The query to use to find the object.
    * @param handler Null for a single query, or a value for multiple.
    * @return A promise for a value or count
    */
-  select(query, handler) {
+  find(query, handler) {
 
     // Multiple mode, stop when asked or out of content, return a promise(count)
-    if (!handler) {
+    if (handler) {
+      console.log("MULTI MODE");
       return this._find(query, handler);
     }
 
     // Single mode, stop after one item, return a promise(v)
+    console.log("SINGLE MODE");
     var deferred = q.defer();
-    this._find(query, 1, (v, end) => {
+    this._find(query, (v, next, end) => {
       end();
       deferred.resolve(v);
     }).then(null, () => {
@@ -49,9 +65,9 @@ export default class PersistenceFactory {
   }
 
   /**
-   * Implement this in the persistence backend to return results async.
+   * Implement this in the persistence backend to return results async as per find().
    * @param query Some query structure
-   * @param handler Invoke this handler for each item. (value, stop) => { ... }
+   * @param handler Invoke this handler for each item. (value, next, end) => { ... }
    * @return A promise for the count of returned items.
    */
   _find(query, handler) {

@@ -1,3 +1,4 @@
+var combine = require('gulp-js-combine');
 var babel = require('gulp-babel');
 var jade = require('gulp-jade');
 var gulp = require('gulp');
@@ -9,7 +10,7 @@ var sass = require('gulp-sass-native');
 gulp.task('default', ['templates', 'styles', 'scripts', 'client-scripts']);
 
 /// Run tests
-gulp.task('test', ['default'], function () {
+gulp.task('test', function () {
   gulp.src('./build/**/*.tests.js').pipe(nodeunit());
 });
 
@@ -35,12 +36,12 @@ gulp.task('styles', function() {
 gulp.task('scripts', function() {
 
   // Process all js files from es6 to browser compatible
-  gulp.src('./src/scripts/server/**/*.js')
+  gulp.src(['./src/scripts/server/**/*.js'])
     .pipe(babel())
     .pipe(gulp.dest('./build/server'));
 
   // Process all js files from es6 to browser compatible
-  gulp.src('./src/scripts/lib/**/*.js')
+  gulp.src(['./src/scripts/lib/**/*.js'])
     .pipe(babel())
     .pipe(gulp.dest('./build/server/lib'));
 });
@@ -49,12 +50,12 @@ gulp.task('scripts', function() {
 gulp.task('client-scripts', function() {
 
   // Process all js files from es6 to browser compatible
-  gulp.src('./src/scripts/client/**/*.js')
+  gulp.src(['./src/scripts/client/**/*.js'])
     .pipe(babel())
     .pipe(gulp.dest('./build/client'));
 
   // Process all js files from es6 to browser compatible
-  gulp.src('./src/scripts/lib/**/*.js')
+  gulp.src(['./src/scripts/lib/**/*.js'])
     .pipe(babel())
     .pipe(gulp.dest('./build/client/lib'));
 
