@@ -1,4 +1,5 @@
 var combine = require('gulp-js-combine');
+var run = require('run-sequence');
 var babel = require('gulp-babel');
 var jade = require('gulp-jade');
 var gulp = require('gulp');
@@ -10,8 +11,12 @@ var sass = require('gulp-sass-native');
 gulp.task('default', ['templates', 'styles', 'scripts', 'client-scripts']);
 
 /// Run tests
-gulp.task('test', function () {
-  gulp.src('./build/**/*.tests.js').pipe(nodeunit());
+gulp.task('test', function (callback) {
+  run('default', 'lib-scripts', 'nodeunit', callback);
+});
+
+gulp.task('nodeunit', function (callback) {
+  return gulp.src('./build/**/*.tests.js').pipe(nodeunit());
 });
 
 /// Build all static templates
@@ -40,8 +45,8 @@ gulp.task('scripts', function() {
     .pipe(babel())
     .pipe(gulp.dest('./build/server'));
 
-  // Process all js files from es6 to browser compatible
-  gulp.src(['./src/scripts/lib/**/*.js'])
+  // Add libs folder for server
+  gulp.src(['./src/scripts/lib/**/*.js', '!./src/scripts/lib/**/*.tests.js'])
     .pipe(babel())
     .pipe(gulp.dest('./build/server/lib'));
 });
@@ -54,8 +59,8 @@ gulp.task('client-scripts', function() {
     .pipe(babel())
     .pipe(gulp.dest('./build/client'));
 
-  // Process all js files from es6 to browser compatible
-  gulp.src(['./src/scripts/lib/**/*.js'])
+  // Add libs folder for client
+  gulp.src(['./src/scripts/lib/**/*.js', '!./src/scripts/lib/**/*.tests.js'])
     .pipe(babel())
     .pipe(gulp.dest('./build/client/lib'));
 
@@ -64,8 +69,15 @@ gulp.task('client-scripts', function() {
     .pipe(browserify({
        insertGlobals : true,
        debug : true,
-     }))
+    }))
     .pipe(gulp.dest('./public/js'));
+});
+
+// Compile lib scripts and tests
+gulp.task('lib-scripts', function() {
+  return gulp.src(['./src/scripts/lib/**/*.js'])
+    .pipe(babel())
+    .pipe(gulp.dest('./build/lib'));
 });
 
 gulp.task('server', ['default'], function() {

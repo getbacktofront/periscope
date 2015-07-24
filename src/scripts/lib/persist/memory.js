@@ -35,14 +35,10 @@ export class MemoryFactory extends PersistenceFactory {
     var rtn = q.defer();
 
     // Get list of ids and query helper
-    console.log(query);
     var ids = query.ids ? query.ids.slice(0) : [];
-    console.log(ids);
     if (query.id) { ids.push(query.id); }
-    console.log(ids);
     var match = (value) => {
       for (var i = 0; i < ids.length; ++i) {
-        console.log(value.id + " == " + ids[i] + " ? " + (ids[i] == value.id));
         if (ids[i] == value.id) {
           return true;
         }
@@ -53,18 +49,12 @@ export class MemoryFactory extends PersistenceFactory {
     // Cache active list for this query
     var values = [];
     for (var key in this._storage) {
-      console.log(this._storage[key]);
       if (match(this._storage[key])) {
-        console.log("Added!");
         values.push(this._storage[key]);
       }
     }
-    console.log("Objects ------- ");
-    console.log(values);
-    console.log("------- ");
     if (values.length == 0) {
       rtn.resolve(0);
-      console.log("Early return, no matches");
       return rtn.promise;
     }
 
@@ -72,15 +62,11 @@ export class MemoryFactory extends PersistenceFactory {
     var offset = 0;
     var dispatch_next = () => {
       if (offset < values.length) {
-        console.log("Dispatch with offset: " + offset);
         try {
-          console.log(handler);
           handler(values[offset], () => {
-            console.log("Next called");
             offset += 1;
             dispatch_next();
           }, () => {
-            console.log("last called");
             rtn.resolve(offset + 1);
           });
         }
@@ -95,7 +81,6 @@ export class MemoryFactory extends PersistenceFactory {
 
     // Async resolve
     setTimeout(dispatch_next, 0);
-    console.log("Return: " + rtn.promise);
     return rtn.promise;
   }
 }

@@ -39,6 +39,7 @@
     "gulp-live-server": "*",
     "gulp-nodeunit": "0.0.5",
     "gulp-sass-native": "shadowmint/gulp-sass-native#0.0.1",
-    "nodeunit": "^0.9.1"
+    "nodeunit": "^0.9.1",
+    "run-sequence": "^1.1.1"
   }
 }

@@ -38,12 +38,10 @@ export class PersistenceFactory {
 
     // Multiple mode, stop when asked or out of content, return a promise(count)
     if (handler) {
-      console.log("MULTI MODE");
       return this._find(query, handler);
     }
 
     // Single mode, stop after one item, return a promise(v)
-    console.log("SINGLE MODE");
     var deferred = q.defer();
     this._find(query, (v, next, end) => {
       end();
