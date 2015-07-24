@@ -1,8 +1,8 @@
-div.corner-menu.menu-actions.svg-menu(data-title="Actions", data-short=" ")
-  a(href="#")| new pen
-  a(href="#")| save pen
+div.corner-menu.menu-actions(data-title="Actions", data-short="|svg-menu")
+  a(href="javascript: window.periscope.pen.create()")| new pen
+  a(href="javascript: window.periscope.pen.delete()")| delete pen
 
-div.corner-menu.menu-pens.svg-folder(data-title="Pens", data-short=" ")
+div.corner-menu.menu-pens.svg-folder#pens_menu(data-title="Pens", data-short=" ")
   a(href="#")| Pen title...
   a(href="#")| Pen2
   a(href="#")| Pen3

@@ -55,3 +55,39 @@ module.exports.test_service_handle_failure = function(test) {
     test.done();
   });
 };
+
+class CustomService extends Service {
+  handler(data, conn, next) {
+    this.data = data;
+    this.next = next;
+    switch (data.request) {
+      case 'foo': this.handle_foo(); break;
+      case 'bar': this.handle_bar(); break;
+    }
+    this.next();
+  }
+  handle_foo() {
+    this.output = 'foo';
+  }
+  handle_bar() {
+    this.output = 'bar';
+  }
+}
+
+module.exports.test_extended_service_handle = function(test) {
+  test.expect(4);
+  var instance = new CustomService('foo.*');
+  instance.handle({ path: 'foo', request: 'foo' }).then(() => {
+    test.ok(instance.isOk());
+    test.ok(instance.output == 'foo');
+    instance.handle({ path: 'foo', request: 'bar' }).then(() => {
+      test.ok(instance.isOk());
+      test.ok(instance.output == 'bar');
+      test.done();
+    }, (err) => {
+      test.ok(false);
+    });
+  }, (err) => {
+    test.ok(false);
+  });
+};

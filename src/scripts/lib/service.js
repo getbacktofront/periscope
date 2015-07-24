@@ -18,8 +18,15 @@ class Service {
   constructor(path, handler) {
     this.state = ServiceState.IDLE;
     this.path = new RegExp(path);
-    this.handler = handler;
     this.error = null;
+    if (handler) {
+      this.handler = handler;
+    }
+  }
+
+  /** The handler to override, if required */
+  handler(data, connection, next) {
+    next();
   }
 
   /** Check if this service matches the given regex */

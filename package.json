@@ -18,13 +18,8 @@
   "homepage": "https://github.com/getbacktofront/periscope",
   "dependencies": {
     "babel": "^5.5.4",
-<<<<<<< HEAD
-    "component-corner-menu": "shadowmint/js-corner-menu#0.0.1",
-    "buffertools": "^2.1.2",
-=======
     "buffertools": "^2.1.2",
     "component-corner-menu": "shadowmint/component-corner-menu#0.0.1",
->>>>>>> f4a3e8c... Adds corner menu
     "express": "^4.12.4",
     "gulp-babel": "^5.1.0",
     "gulp-jade": "^1.0.1",

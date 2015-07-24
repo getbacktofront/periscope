@@ -19,6 +19,15 @@ class PenApi {
     }));
   }
 
+  /** Select a new pen */
+  select(id) {
+    this.connection.socket.send(JSON.stringify({
+      path: 'pen',
+      request: task.SELECT,
+      target: id
+    }));
+  }
+
   /**
    * Delete a pen
    * @param id The id of the pen to delete

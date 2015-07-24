@@ -18,6 +18,8 @@ class InputBox {
     this.output = output;
     this.connection = connection;
     this.service = service;
+    console.log("*** Binding to target");
+    console.log(this.$input);
     $input.keyup(() => { this.reload(); });
   }
 
@@ -27,9 +29,13 @@ class InputBox {
     }
     this.timer = setTimeout(() => {
       var value = this.$input.val();
-      console.log('Value: ' + value);
       if(this.last_value != value) {
         if (this.connection.socket) {
+            console.log(JSON.stringify({
+              path: this.service,
+              target: this.output,
+              raw: value
+            }));
           this.connection.socket.send(
             JSON.stringify({
               path: this.service,
@@ -47,9 +53,9 @@ class InputBox {
 // Bind various input handlers
 export default function factory(connection) {
   var inputs = [
-    new InputBox($('#input'), '#output', connection, 'sass'),
-    new InputBox($('#input_jade'), '#output_html', connection, 'jade'),
-    new InputBox($('#input_es6'), '#output_js', connection, 'babel')
+    new InputBox($('#css_input'), '#css_output', connection, 'sass'),
+    new InputBox($('#html_input'), '#html_output', connection, 'jade'),
+    new InputBox($('#js_input'), '#js_output', connection, 'babel')
   ];
   setTimeout(() => {
     for (var i = 0; i < inputs.length; ++i) {

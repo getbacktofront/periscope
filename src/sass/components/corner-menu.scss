@@ -1,14 +1,23 @@
+$menu_size: 48px;
+$padding: 4px;
+
 .corner-menu {
-  width: 48px;
-  height: 48px;
-  margin: 0.2em;
+  display: inline-block;
+  > div {
+    width: $menu_size;
+    height: $menu_size;
+  }
   font-size: 2em;
   text-align: left;
-  .state--active & {
+  &.state--active {
+    background: #fff;
+    margin-left: $padding * 2;
+    margin-top: $padding * 2;
+    border: 1px solid #333;
     > div {
-      background: #fff;
-      padding: 0.5em;
       width: auto;
+      height: auto;
+      padding: 0.4em;
     }
     h1 {
       font-size: 0.75em;
@@ -22,13 +31,30 @@
   }
   li {
     font-size: $font_base;
+    span {
+      display: block;
+      white-space:nowrap;
+    }
+    a {
+      display: block;
+      white-space:nowrap;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
+
 .corner-menu-box {
-  width: 3em;
+  width: $menu_size + $padding * 2;
   text-align: center;
   display: none;
   .socket--connected & {
     display: block;
   }
+}
+
+body {
+  margin-left: $menu_size + $padding * 2;
 }

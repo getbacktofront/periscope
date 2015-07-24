@@ -1,5 +1,6 @@
 import $ from 'jquery/dist/jquery';
 import SockJS from 'sockjs-client/lib/entry';
+import q from 'Q';
 
 /** Possible connection states */
 var SocketState = {
@@ -35,11 +36,13 @@ export class Socket {
   /** Open a connection, or at least attempt to... */
   connect() {
     this.state(SocketState.CONNECTING);
+    var deferred = q.defer();
     var socket = new SockJS(this.path);
     var router = require('./router');
     socket.onopen = () => {
       this.state(SocketState.CONNECTED);
       this.socket = socket;
+      deferred.resolve(true);
     };
     socket.onclose = () => {
       setTimeout(() => {
@@ -55,7 +58,9 @@ export class Socket {
     socket.onmessage = (e) => {
       try {
         var data = e.data;
+        console.log(data);
         data = JSON.parse(data);
+        console.log(data);
         router.handle(data, socket);
       }
       catch(err) {
@@ -63,5 +68,6 @@ export class Socket {
         console.log(err);
       }
     };
+    return deferred.promise;
   }
 }
