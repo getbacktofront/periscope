@@ -1,0 +1,6 @@
+[submodule "src/svg/open-iconic"]
+	path = src/svg/open-iconic
+	url = https://github.com/iconic/open-iconic
+[submodule "3rdparty/material-design-icons"]
+	path = 3rdparty/material-design-icons
+	url = https://github.com/google/material-design-icons

@@ -1,35 +1,38 @@
 html
   head
+    link(href="svg/css/sprite.css", rel="stylesheet", type="text/css")
+    link(href="fonts/fonts.css", rel="stylesheet", type="text/css")
     link(href="css/styles.css", rel="stylesheet", type="text/css")
   body
-    p.status
-      | Hello World 2
+    include ./partials/menu.jade
+    include ./partials/status.jade
       
-  div.dynamic_block
-    form
-      | Type sass here!
-      br
-      textarea#input
-      textarea#output
-        
-  div.dynamic_block
-    form
-      | Type jade here!
-      br
-      textarea#input_jade
-      textarea#output_html
-        
-  div.dynamic_block
-    form
-      | Type es6 javascript here!
-      br
-      | eg. class Foo {}; var x = new Foo();
-      br
-      textarea#input_es6
-      textarea#output_js
-        
-  iframe#periscope
-    
-  div#debug
-              
-  script(src="js/app.js")
+    div.dynamic_block
+      form
+        | Type sass here!
+        br
+        textarea#input
+        textarea#output
+          
+    div.dynamic_block
+      form
+        | Type jade here!
+        br
+        textarea#input_jade
+        textarea#output_html
+          
+    div.dynamic_block
+      form
+        | Type es6 javascript here!
+        br
+        | eg. class Foo {}; var x = new Foo();
+        br
+        textarea#input_es6
+        textarea#output_js
+          
+    div#periscope
+      iframe
+      
+    div#debug
+                
+    script(src="js/app.js")

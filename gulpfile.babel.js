@@ -7,6 +7,11 @@ var nodeunit = require('gulp-nodeunit');
 var gls = require('gulp-live-server');
 var browserify = require('gulp-browserify');
 var sass = require('gulp-sass-native');
+var fontgen = require('gulp-fontgen');
+var concatCss = require('gulp-concat-css');
+
+// Import asset tasks
+import assets from './gulp/assets';
 
 gulp.task('default', ['templates', 'styles', 'scripts', 'client-scripts']);
 
@@ -35,6 +40,17 @@ gulp.task('styles', function() {
   gulp.src('./src/sass/*.scss')
     .pipe(sass().on('error', function(err) { console.log(err); }))
     .pipe(gulp.dest('./public/css'));
+});
+
+// Compile svg files into inline blocks
+gulp.task('scripts', function() {
+  gulp.src("/**/*.css")
+    .pipe(svgMin())
+    .pipe(inlineSvg({
+        filename: '_svg-file.scss',
+        template: 'mytemplate.mustache'
+    }))
+    .pipe(gulp.dest("sass"));
 });
 
 // Setup scripts for client and server
@@ -88,7 +104,7 @@ gulp.task('server', ['default'], function() {
 
   // Watch for changes
   gulp.watch(['src/jade/**/*.jade'], ['templates']);
-  gulp.watch(['src/sass/*.scss'], ['styles']);
+  gulp.watch(['src/sass/**/*.scss'], ['styles']);
   gulp.watch(['src/scripts/lib/**/*.js'], ['scripts', 'client-scripts']);
   gulp.watch(['src/scripts/client/**/*.js'], ['client-scripts']);
   gulp.watch(['src/scripts/server/**/*.js'], ['scripts']);

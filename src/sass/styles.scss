@@ -1,28 +1,11 @@
-body {
-  html {
-    padding: 20px;
-  }
-}
+/** Common contant includes */
+@import "./constants/_manifest";
 
-textarea {
-  width: 400px;
-  height: 300px;
-}
+/** Common base styles */
+@import "./html/_manifest";
 
-.dynamic_block {
-  display: none;
-  .socket--connected & {
-    display: block;
-  }
-  textarea {
-    height: 200px;
-  }
-}
+/** Individual page elements and partials */
+@import "./page_elements/_manifest";
 
-iframe {
-  position: fixed;
-  right: 0px;
-  top: 0px;
-  width: 400px;
-  height: 400px;
-}
+/** Specific component style overrides */
+@import "./components/_manifest";

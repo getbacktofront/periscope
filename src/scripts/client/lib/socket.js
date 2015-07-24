@@ -16,6 +16,9 @@ export class Socket {
     this.socket = null;
     this.path = '/service';
     this.$status = $status;
+    this.reconnect = true;
+    this.interval = false;
+    this.reconnect_interval = 3000;
   }
 
   /**
@@ -23,9 +26,6 @@ export class Socket {
    * @param state A SocketState value.
    */
   state(state) {
-    if (this.$status != null) {
-      this.$status.html(state);
-    }
     $('body').removeClass(SocketState.CLOSED);
     $('body').removeClass(SocketState.CONNECTING);
     $('body').removeClass(SocketState.CONNECTED);
@@ -42,8 +42,15 @@ export class Socket {
       this.socket = socket;
     };
     socket.onclose = () => {
-      this.state(SocketState.CLOSED);
-      this.socket = null;
+      setTimeout(() => {
+        this.state(SocketState.CLOSED);
+        this.socket = null;
+        if (this.reconnect) {
+          setTimeout(() => {
+            this.connect();
+          }, this.reconnect_interval);
+        }
+      }, 1000);
     };
     socket.onmessage = (e) => {
       try {

@@ -1,0 +1,28 @@
+.status {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  margin: 0.3em;
+  padding: 0.5em;
+  > div {
+    display: none;
+  }
+  .socket--connected & {
+    background: $status_ok;
+    .connected {
+      display: block;
+    }
+  }
+  .socket--connecting & {
+    background: $status_busy;
+    .connecting {
+      display: block;
+    }
+  }
+  .socket--closed & {
+    background: $status_error;
+    .closed {
+      display: block;
+    }
+  }
+}

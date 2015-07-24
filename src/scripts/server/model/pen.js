@@ -12,6 +12,7 @@ export class Pen {
   compile() {
     var js = JSON.stringify(this.js);
     var rtn = '<style>'+this.css+'</style>'+this.html+'<script>var script = ' + js + '; try { eval(script); } catch(err) { console.log(err); }</script>';
+    console.log(rtn);
     return rtn;
   }
 };

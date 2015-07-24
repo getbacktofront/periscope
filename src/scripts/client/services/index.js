@@ -1,7 +1,8 @@
 export default function(handler) {
   var services = [
     require('./task'),
-    require('./periscope')
+    require('./periscope'),
+    require('./pen')
   ];
   for (var i = 0; i < services.length; ++i) {
     var service = services[i]();

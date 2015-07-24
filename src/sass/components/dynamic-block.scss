@@ -1,0 +1,9 @@
+.dynamic_block {
+  display: none;
+  .socket--connected & {
+    display: block;
+  }
+  textarea {
+    height: 200px;
+  }
+}

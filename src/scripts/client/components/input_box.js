@@ -12,28 +12,54 @@ class InputBox {
    */
   constructor($input, output, connection, service) {
     this.last_value = null;
-    $input.keyup(() => {
-      var value = $input.val();
+    this.timer = null;
+    this.interval = 500;
+    this.$input = $input;
+    this.output = output;
+    this.connection = connection;
+    this.service = service;
+    $input.keyup(() => { this.reload(); });
+  }
+
+  reload() {
+    if (this.timer != null) {
+      clearTimeout(this.timer);
+    }
+    this.timer = setTimeout(() => {
+      var value = this.$input.val();
+      console.log('Value: ' + value);
       if(this.last_value != value) {
-        if (connection.socket) {
-          connection.socket.send(
+        if (this.connection.socket) {
+          this.connection.socket.send(
             JSON.stringify({
-              path: service,
-              target: output,
+              path: this.service,
+              target: this.output,
               raw: value
             })
           );
           this.last_value = value;
         }
       }
-    });
+    }, this.interval);
   }
 }
 
 // Bind various input handlers
 export default function factory(connection) {
-  new InputBox($('#input'), '#output', connection, 'sass');
-  new InputBox($('#input_jade'), '#output_html', connection, 'jade');
-  new InputBox($('#input_es6'), '#output_js', connection, 'babel');
+  var inputs = [
+    new InputBox($('#input'), '#output', connection, 'sass'),
+    new InputBox($('#input_jade'), '#output_html', connection, 'jade'),
+    new InputBox($('#input_es6'), '#output_js', connection, 'babel')
+  ];
+  setTimeout(() => {
+    for (var i = 0; i < inputs.length; ++i) {
+      try {
+        inputs[i].reload();
+      }
+      catch(err) {
+        console.log(err);
+      }
+    }
+  }, 500);
   return { name: 'InputBox' };
 }

@@ -18,10 +18,18 @@
   "homepage": "https://github.com/getbacktofront/periscope",
   "dependencies": {
     "babel": "^5.5.4",
+<<<<<<< HEAD
     "component-corner-menu": "shadowmint/js-corner-menu#0.0.1",
     "buffertools": "^2.1.2",
+=======
+    "buffertools": "^2.1.2",
+    "component-corner-menu": "shadowmint/component-corner-menu#0.0.1",
+>>>>>>> f4a3e8c... Adds corner menu
     "express": "^4.12.4",
-    "gulp-sass": "^2.0.1",
+    "gulp-babel": "^5.1.0",
+    "gulp-jade": "^1.0.1",
+    "gulp-sass-native": "shadowmint/gulp-sass-native#0.0.2",
+    "jade": "^1.11.0",
     "jquery": "^2.1.4",
     "node-static": "^0.7.6",
     "primus": "^3.0.2",
@@ -32,14 +40,15 @@
     "ws": "^0.7.2"
   },
   "devDependencies": {
+    "babel-core": "^5.6.17",
     "gulp": "^3.9.0",
-    "gulp-babel": "^5.1.0",
     "gulp-browserify": "^0.5.1",
-    "gulp-jade": "^1.0.1",
+    "gulp-concat-css": "^2.2.0",
+    "gulp-fontgen": "^0.1.5",
     "gulp-js-combine": "shadowmint/gulp-js-combine#0.0.1",
     "gulp-live-server": "*",
     "gulp-nodeunit": "0.0.5",
-    "gulp-sass-native": "shadowmint/gulp-sass-native#0.0.1",
+    "gulp-svg-sprite": "^1.2.5",
     "nodeunit": "^0.9.1",
     "run-sequence": "^1.1.1"
   }
