@@ -1,4 +1,4 @@
-module.exports = function(handler) {
+export default function(handler) {
   var services = [
     require('./task'),
     require('./periscope')

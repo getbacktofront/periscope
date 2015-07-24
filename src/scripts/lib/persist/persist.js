@@ -1,7 +1,11 @@
 import q from 'Q';
 
 /** A base class for handling persistence with objects */
-export class PersistenceFactory {
+export class Persist {
+
+  constructor() {
+    this.indexes = [];
+  }
 
   /**
    * Create a new instance
@@ -50,6 +54,32 @@ export class PersistenceFactory {
       deferred.reject(err);
     });
     return deferred.promise;
+  }
+
+  /**
+   * Run a find() query and return a promise for all records.
+   * @param query The query to use to find the object.
+   * @return A promise for all values
+   */
+  all(query) {
+    var deferred = q.defer();
+    var rtn = [];
+    this.find(query, (v, next, end) => {
+      rtn.push(v);
+      next();
+    }).then(() => {
+      deferred.resolve(rtn);
+    });
+    return deferred.promise;
+  }
+
+  /**
+   * Return an index by name
+   * @param name The name of the index
+   * @return An index instance or null
+   */
+  index(name) {
+    return this.indexes[name] ? this.indexes[name] : null;
   }
 
   /** Implement this in the final child factory to create new instances of the required type */

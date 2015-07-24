@@ -1,15 +1,15 @@
-var $ = require('../../node_modules/jquery/dist/jquery');
-var SockJS = require('../../node_modules/sockjs-client/lib/entry');
+import $ from 'jquery/dist/jquery';
+import SockJS from 'sockjs-client/lib/entry';
 
 /** Possible connection states */
-var ConnectionState = {
+var SocketState = {
   CLOSED: 'socket--closed',
   CONNECTING: 'socket--connecting',
   CONNECTED: 'socket--connected'
 };
 
 /** Client socket connection handler */
-class Connection {
+export class Socket {
 
   /** Create a new connection helper */
   constructor($status) {
@@ -20,37 +20,35 @@ class Connection {
 
   /**
    * Update the connection state
-   * @param state A ConnectionState value.
+   * @param state A SocketState value.
    */
   state(state) {
     if (this.$status != null) {
       this.$status.html(state);
     }
-    $('body').removeClass(ConnectionState.CLOSED);
-    $('body').removeClass(ConnectionState.CONNECTING);
-    $('body').removeClass(ConnectionState.CONNECTED);
+    $('body').removeClass(SocketState.CLOSED);
+    $('body').removeClass(SocketState.CONNECTING);
+    $('body').removeClass(SocketState.CONNECTED);
     $('body').addClass(state);
-    console.log(state);
   }
 
   /** Open a connection, or at least attempt to... */
   connect() {
-    this.state(ConnectionState.CONNECTING);
+    this.state(SocketState.CONNECTING);
     var socket = new SockJS(this.path);
     var router = require('./router');
     socket.onopen = () => {
-      this.state(ConnectionState.CONNECTED);
+      this.state(SocketState.CONNECTED);
       this.socket = socket;
     };
     socket.onclose = () => {
-      this.state(ConnectionState.CLOSED);
+      this.state(SocketState.CLOSED);
       this.socket = null;
     };
     socket.onmessage = (e) => {
       try {
         var data = e.data;
         data = JSON.parse(data);
-        console.log(data);
         router.handle(data, socket);
       }
       catch(err) {
@@ -60,6 +58,3 @@ class Connection {
     };
   }
 }
-
-// Export only the connection handler
-module.exports = Connection;

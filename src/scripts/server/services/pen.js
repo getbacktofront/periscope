@@ -1,5 +1,5 @@
 import Service from '../lib/service';
-import {PenFactory} from '../model/pen';
+import {Pens} from '../model/pen';
 
 /** Pass input directly to jade gulp plugin */
 module.exports = function(pen) {

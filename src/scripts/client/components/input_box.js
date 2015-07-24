@@ -1,11 +1,4 @@
-require("babel/polyfill");
-var $ = require('../../node_modules/jquery/dist/jquery');
-var thing = require('./lib/thing');
-var Connection = require('./connection');
-
-// Open connection to server
-var connection = new Connection($('.status'));
-connection.connect();
+import $ from 'jquery/dist/jquery';
 
 /** Handle mapping an input area to an output area */
 class InputBox {
@@ -38,6 +31,9 @@ class InputBox {
 }
 
 // Bind various input handlers
-new InputBox($('#input'), '#output', connection, 'sass');
-new InputBox($('#input_jade'), '#output_html', connection, 'jade');
-new InputBox($('#input_es6'), '#output_js', connection, 'babel');
+export default function factory(connection) {
+  new InputBox($('#input'), '#output', connection, 'sass');
+  new InputBox($('#input_jade'), '#output_html', connection, 'jade');
+  new InputBox($('#input_es6'), '#output_js', connection, 'babel');
+  return { name: 'InputBox' };
+}

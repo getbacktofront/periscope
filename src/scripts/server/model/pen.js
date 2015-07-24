@@ -1,4 +1,4 @@
-import {MemoryFactory} from '../lib/persist/memory';
+import {Memory} from '../lib/persist/memory';
 
 /** This class represents a single html/css/javascript combo as a single page */
 export class Pen {
@@ -10,12 +10,14 @@ export class Pen {
 
   /** Compile into one block of stuff */
   compile() {
-    return '<style>'+this.css+'</style>'+this.html+'<script>'+this.js+'</script>';
+    var js = JSON.stringify(this.js);
+    var rtn = '<style>'+this.css+'</style>'+this.html+'<script>var script = ' + js + '; try { eval(script); } catch(err) { console.log(err); }</script>';
+    return rtn;
   }
 };
 
 /** Access to pen instances via persistance api */
-export class PenFactory extends MemoryFactory {
+export class Pens extends Memory {
   _new() {
     return new Pen();
   }

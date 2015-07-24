@@ -1,12 +1,17 @@
 import q from 'Q';
-import {PersistenceFactory} from './persist';
+import {Persist} from './persist';
+import {Index} from './index';
 
 /** Stores object instances in memory */
-export class MemoryFactory extends PersistenceFactory {
+export class Memory extends Persist {
 
   constructor() {
     super();
     this._storage = {};
+
+    var key_index = new MemoryKeyIndex();
+    key_index.bind(this, 'key');
+    key_index.bind(this, 'keys');
   }
 
   /** Generate a random id for this node */
@@ -21,7 +26,11 @@ export class MemoryFactory extends PersistenceFactory {
       instance.id = this._random();
     }
     this._storage[instance.id] = instance;
-    deferred.resolve(instance);
+    this.indexes.key.index(instance).then(() => {
+      deferred.resolve(instance);
+    }, () => {
+      deferred.reject("Failed to index new object");
+    })
     return deferred.promise;
   }
 
@@ -82,5 +91,70 @@ export class MemoryFactory extends PersistenceFactory {
     // Async resolve
     setTimeout(dispatch_next, 0);
     return rtn.promise;
+  }
+}
+
+/** Stores key values */
+export class MemoryKeyIndex extends Index {
+
+  constructor() {
+    super();
+    this.values = [];
+  }
+
+  /**
+   * Bind this index to a persist instance
+   * @param persist The Persist object to associate this index with.
+   * @param name The name of this index.
+   * @return A promise for completion.
+   */
+  bind(persist, name) {
+    var rtn = q.defer();
+    persist.indexes[name] = this;
+    rtn.resolve(true);
+    return rtn.promise;
+  }
+
+  /**
+   * Insert a record / key binding for this index
+   * @param value The lookup value for the record
+   * @return A promise for completion
+   */
+  index(value) {
+    var rtn = q.defer();
+    this.values.push(value.id);
+    rtn.resolve(true);
+    return rtn.promise;
+  }
+
+  /**
+   * Return a count of the values in this index
+   * @return A promise for the count
+   */
+  count() {
+    var rtn = q.defer();
+    rtn.resolve(this.values.length);
+    return rtn.promise;
+  }
+
+  /**
+   * Return count query values offset from the start.
+   * @param offset The offset into the index key set.
+   * @param count The number of index keys to return
+   * @return A promise for an array of index values
+   */
+  keys(offset, count) {
+    var rtn = q.defer();
+    rtn.resolve(this.values.slice(offset, offset + count));
+    return rtn.promise;
+  }
+
+  /**
+   * Return a query value for the given key set
+   * @param keys The set of keys to generate a query for
+   * @return The query object for the set of keys
+   */
+  query(keys) {
+    return { ids: keys };
   }
 }

@@ -19,6 +19,7 @@
   "dependencies": {
     "babel": "^5.5.4",
     "component-corner-menu": "shadowmint/js-corner-menu#0.0.1",
+    "buffertools": "^2.1.2",
     "express": "^4.12.4",
     "gulp-sass": "^2.0.1",
     "jquery": "^2.1.4",

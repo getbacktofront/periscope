@@ -15,13 +15,10 @@ var server = app.listen(3000, function() {
 // 1. Echo sockjs server
 var socket_server = sockjs.createServer({});
 socket_server.on('connection', function(conn) {
-  console.log("conn: " + conn);
   conn.on('data', function(message) {
     if (router != null) {
       try {
         var data = JSON.parse(message);
-        console.log(data);
-        console.log(conn);
         router.handle(data, conn);
       }
       catch(err) {

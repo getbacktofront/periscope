@@ -1,46 +1,13 @@
-var Service = require('../lib/service.js');
-var babel = require('gulp-babel');
-var File = require('vinyl');
-var StringDecoder = require('string_decoder').StringDecoder;
+import {gulp} from '../stream/stream';
+import Service from '../lib/service';
+import browserify from 'gulp-browserify';
+import babel from 'gulp-babel';
 
-/** Pass input directly to jade gulp plugin */
-module.exports = function(pen) {
+/** Pass input directly to sass gulp plugin */
+export default function service(pen) {
   var rtn = new Service('babel', (data, conn, next) => {
-    var pen = rtn.pen;
-    try {
-      console.log("BABEL request...");
-      console.log(data.raw);
-      var file = new File({
-        path: 'source.scss',
-        cwd: 'fake/',
-        base: 'fake/',
-        contents: new Buffer(data.raw)
-      });
-
-      var stream = babel();
-      stream.on('error', function(err) {
-        console.log("Babel error");
-        conn.write(JSON.stringify({
-          path: 'task',
-          target: data.target,
-          value: err.message
-        }));
-      });
-
-      var bufs = [];
-      stream.on('readable', function() {
-        var read = stream.read();
-        if (read) {
-          bufs.push(read.contents);
-        }
-      });
-
-      stream.on('end', function() {
-        console.log("Ended stream...");
-        var all = Buffer.concat(bufs);
-        var decoder = new StringDecoder('utf8');
-        var content = decoder.write(all).trim();
-        console.log(content);
+    gulp(babel, 'source.js', data.raw).then((content) => {
+      gulp(browserify, 'source.js', content).then((content) => {
         pen.js = content;
         conn.write(JSON.stringify({
           path: 'task',
@@ -51,17 +18,22 @@ module.exports = function(pen) {
           path: 'periscope',
           value: pen.compile()
         }));
+      }, (err) => {
+        conn.write(JSON.stringify({
+          path: 'task',
+          target: data.target,
+          value: err.message
+        }));
       });
-
-      stream.write(file);
-      stream.end();
-    }
-    catch(err) {
-      console.log("Failed on stream write");
-      console.log(err);
-    }
+    }, (err) => {
+      conn.write(JSON.stringify({
+        path: 'task',
+        target: data.target,
+        value: err.message
+      }));
+    });
     next();
   });
   rtn.pen = pen;
   return rtn;
-};
+}

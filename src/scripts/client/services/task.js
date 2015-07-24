@@ -1,8 +1,8 @@
-var Service = require('../lib/service.js');
-var $ = require('../../../node_modules/jquery/dist/jquery');
+import Service from '../lib/service.js';
+import $ from 'jquery/dist/jquery';
 
 /** Publish the output string to the given target */
-module.exports = function() {
+export default function handler() {
   return new Service('task', (data, c, next) => {
     $(data.target).val(data.value);
     next();
