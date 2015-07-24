@@ -9,8 +9,12 @@ This project uses an ES6 gulpfile. You need gulp >= 3.9 to use it.
 ## quickstart
 
     npm install
+    gulp
+    gulp assets
     gulp server
     open http://localhost:3000
+
+Gulp assets is a one-time build of svg fonts, etc.
 
 ## tests
 
